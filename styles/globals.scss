@@ -1,0 +1,276 @@
+@import "./default";
+@import "./custommixins";
+
+@include default-page-adjusment("Cabin");
+@include default-hr();
+@include default-input();
+@include user-interactable(false);
+
+// global configs
+main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding-top: 52px;
+}
+
+// components
+.post-container  {
+  @include grid-row(auto, 16px);
+}
+
+@mixin light-box-shadow {
+  box-shadow: 0 0.2rem 0.5rem rgba($color: #000000, $alpha: 0.1);
+}
+
+.light-text {
+  font-size: small;
+  color: lightslategray;
+}
+
+// post-header
+.post-header {
+  @include grid-col(43px 1fr 200px, 18px);
+  padding: 8px 16px;
+  img {
+    border-radius: 50%;
+  }
+  .user-name {
+
+  }
+  .user-id {
+    @extend .light-text;
+    &::before {
+      content: "@";
+    }
+  }
+  .publish-time {
+    text-align: end;
+  }
+  .publish-date {
+    @extend .light-text;
+    text-align: end;
+  }
+}
+
+// feed-post
+.feed-post {
+  @include light-box-shadow();
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 8px 16px;
+    > .tag {
+      padding: 2px 12px;
+      font-size: small;
+      color: white;
+      background-color: lightslategray;
+      border-radius: 20px;
+      margin-right: 4px;
+      cursor: pointer;
+    }
+  }
+  .image-container {
+    @include flex-center();
+    position: relative;
+    max-height: 680px;
+    overflow: hidden;
+    .post-nav {
+      display: flex;
+      justify-content: space-between;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      padding: 16px 24px;
+      div {
+        display: flex;
+        div {
+          @include light-box-shadow();
+          height: 48px;
+          color: black;
+          background-color: white;
+        }
+        .like-icon {
+          @include grid-col(1fr 1fr);
+          width: 96px;
+          border-radius: 24px;
+          padding: 12px 4px;
+          > aside {
+            @include flex-center();
+            &:first-child {
+              border-right: 1px solid lightgray;
+              color: mediumvioletred;
+              cursor: pointer;
+            }
+          }
+        }
+        .round-icon {
+          @include flex-center();
+          width: 48px;
+          margin-left: 12px;
+          border-radius: 50%;
+          font-size: x-large;
+          cursor: pointer;
+        }
+      }
+    }
+    .post-text {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 24px;
+      color: white;
+      background: linear-gradient(transparent 0%, rgba($color: #000000, $alpha: 0.4) 50%);
+      > span {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+// comment-section
+.comment-section {
+  .comment-header {
+
+  }
+  .comment-container {
+    > * {
+      &:not(:last-child) {
+        border-bottom: 1px solid lightgrey;
+      }
+    }
+  }
+}
+
+.comment {
+  padding: 4px;
+  .content {
+    padding: 8px;
+    padding-left: 78px;
+  }
+}
+
+// loading
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+
+@mixin loading-spinner {
+  .spinner {
+    display: flex;
+    justify-content: space-between;
+    margin: 24px auto;
+    width: 70px;
+  }
+  .spinner > div {
+    width: 18px;
+    height: 18px;
+    background-color: #333;
+  
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  }
+  .spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+  }
+  .spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+  }
+}
+
+#loading-page {
+  @include flex-center();
+  @include loading-spinner();
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  background-color: white;
+}
+
+#loading-nav {
+  @include loading-spinner();
+}
+
+// header
+.text-container {
+  li {
+    color: mix(#fff, lightslategray, 85%);
+    font-size: calc(1em + 20vw) ;  
+    font-weight: 900;
+    text-shadow: 
+      -0.0075em 0.0075em 0 mix(#fff, lightslategray, 94%),
+      0.005em 0.005em 0 mix(#fff, lightslategray, 60%),
+      0.01em 0.01em 0 mix(#fff, lightslategray, 62%), 
+      0.015em 0.015em mix(#fff, lightslategray, 64%), 
+      0.02em 0.02em 0 mix(#fff, lightslategray, 66%), 
+      0.025em 0.025em 0 mix(#fff, lightslategray, 68%),
+      0.03em 0.03em 0 mix(#fff, lightslategray, 70%),
+      0.035em 0.035em 0 mix(#fff, lightslategray, 72%);
+  }
+}
+
+header {
+  @include light-box-shadow();
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 8px;
+  background-color: white;
+  z-index: 99;
+  > div {
+    display: flex;
+    align-items: center;
+    max-width: 680px;
+    margin: 0 auto;
+    .header-text {
+      font-size: x-large;
+      font-weight: bold;
+      margin-right: 12px;
+      cursor: pointer;
+    }
+    input {
+      height: 32px;
+      flex-grow: 1;
+      border: 1px solid lightgray;
+      padding: 0 12px;
+      border-radius: 40px;
+    }
+    .signin-btn {
+      @include flex-center;
+      height: 32px;
+      margin-left: 12px;
+      background-color: lightslategray;
+      color: white;
+      font-weight: bold;
+      padding: 0 12px;
+      border-radius: 40px;
+      cursor: pointer;
+    }
+  }
+}
+
+// footer
+footer {
+  color: lightslategray;
+  text-align: center;
+  padding: 16px;
+}

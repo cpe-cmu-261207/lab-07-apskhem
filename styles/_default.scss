@@ -1,0 +1,98 @@
+@mixin non-scrollable() {
+    html, body {
+        overflow: hidden;
+        height: 100vh;
+    }
+}
+
+@mixin default-page-adjusment($font-family) {
+    html {
+        box-sizing: border-box;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    html, body {
+        font-family: $font-family, sans-serif;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        line-height: 1.5;
+    }
+
+    [hidden] { display: none !important; }
+    li { list-style-type: none; }
+
+    a {
+        background-color: transparent;
+        text-decoration: none;
+        &:hover,
+        &:active {
+            outline-width: 0;
+        }
+    }
+
+    /* addition from w3 css framework */
+    article,aside,nav,section {display: block;}
+    sub,sup {font-size: 75%;line-height: 0;position: relative;vertical-align: baseline}
+    sub {bottom: -0.25em}
+    sup {top: -0.5em}
+    code {font-family: monospace,monospace;font-size: 1em}
+}
+
+@mixin default-hr {
+    hr {
+        display: block;
+        box-sizing: content-box;
+        height: 0;
+        border: 0;
+        overflow: visible;
+        border-top: 2px solid grey;
+    }
+}
+
+@mixin default-input {
+    input {
+        font: inherit;
+        margin: 0;
+        &:focus {
+            outline: none;
+        }
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+    }
+}
+
+@mixin user-interactable($value: true) {
+    @if $value == false {
+        * {
+            box-sizing: inherit;
+            &::before, &::after {
+                box-sizing: inherit;
+            }
+            &:not(textarea),
+            &:not([contenteditable=true]),
+            &:not(input) {
+                user-select: none; /* supported by Chrome and Opera */
+                -webkit-user-select: none; /* Safari */
+                -khtml-user-select: none; /* Konqueror HTML */
+                -moz-user-select: none; /* Firefox */
+                -ms-user-select: none; /* Internet Explorer/Edge */
+            }
+        }
+    
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            border-style: none;
+        
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+        }
+    }
+}
