@@ -1,89 +1,10 @@
 import { Component } from "react";
 import Head from "next/head";
-import axios from "axios";
-import FeedPost from "../public/components/FeedPost";
+import Link from "next/link";
 import Footer from "../public/components/Footer";
 import Header from "../public/components/Header";
-import Loader from "../public/components/Loader";
 
-interface HomeProps {
-  
-}
-
-interface HomeState {
-  posts: PostApiForm[];
-  isReachedBottom: boolean;
-  loadedPageCount: number;
-}
-
-class Home extends Component<HomeProps, HomeState> {
-
-  public readonly BASE_URL = "https://dummyapi.io/data/api";
-  public readonly APP_ID = "600259f00769bf047313ec65";
-  public readonly MAX_POST = 884;
-  public readonly OFFSET_CAP = 100;
-  public readonly LOAD_LIMIT = 8;
-
-  public state = {
-    posts: [] as PostApiForm[],
-    isReachedBottom: false,
-    loadedPageCount: 0
-  };
-
-  public isRequesting: boolean = true;
-
-  public componentDidMount(): void {
-    this.loadRequest();
-
-    // track scrolling
-    document.addEventListener("scroll", this.trackScrolling);
-  }
-
-  public componentDidUpdate(): void {
-    
-  }
-
-  public componentWillUnmount(): void {
-    document.removeEventListener("scroll", this.trackScrolling);
-  }
-
-  private async loadRequest(): Promise<void> {
-    try {
-      const params = { limit: this.LOAD_LIMIT, page: this.state.loadedPageCount };
-      this.isRequesting = true;
-
-      const res = await axios.get<DummyApiResquestedForm<PostApiForm>>(`${this.BASE_URL}/post`, { headers: { "app-id": this.APP_ID }, params });
-
-      // console.log(res.data);
-
-      this.isRequesting = false;
-
-      this.state.posts.push(...res.data.data);
-      const posts = [...this.state.posts];
-      const loadedPageCount = this.state.loadedPageCount + 1;
-
-      this.setState({ ...this.state, posts, loadedPageCount });
-    }
-    catch (err) {
-      console.error(err.data);
-    }
-  }
-
-  private trackScrolling = (): void => {
-    if (this.state.posts.length > this.OFFSET_CAP) return;
-    if (this.isRequesting) return;
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-      this.loadRequest();
-
-      this.setState({ ...this.state, isReachedBottom: true });
-    }
-  };
-
-  public renderFeedPost(): JSX.Element[] {
-    return this.state.posts.map((post) => {
-      return <FeedPost key={post.id} {...post} configs={{ isViewing: false }}/>
-    });
-  }
+class Home extends Component {
 
   public render(): JSX.Element {
     return (
@@ -94,15 +15,29 @@ class Home extends Component<HomeProps, HomeState> {
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap" />
           <title>Lab 07 by Apisit</title>
         </Head>
-        { !this.state.posts.length && <Loader isGlobal={true} /> }
         <Header rootPath="./" />
         <main>
-          <h1>Feed View</h1>
-          <div className="post-container">
-            {this.renderFeedPost()}
+          <div id="index">
+            <h1>Lab 07 Index</h1>
+            <div id="index-content">
+              <Link href="./profile">
+                <div>Profile</div>
+              </Link>
+              <Link href="./gallery">
+                <div>Gallery</div>
+              </Link>
+              <Link href="./contact">
+                <div>Contact</div>
+              </Link>
+              <Link href="./gpacal">
+                <div>GPA Calculator</div>
+              </Link>
+              <Link href="./post">
+                <div>Dummy API</div>
+              </Link>
+            </div>
           </div>
         </main>
-        { this.state.isReachedBottom && <Loader isGlobal={false} /> }
         <Footer />
       </>
     );

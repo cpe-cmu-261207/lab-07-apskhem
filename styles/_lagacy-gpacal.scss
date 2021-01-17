@@ -1,0 +1,201 @@
+$selectionColor: #377FD5;
+$subSelectionColor: #C1EBF4;
+
+/* main-app */
+
+.content-container {
+  display: grid;
+  grid-template-columns: 3fr 6fr;
+}
+
+#gpa-display-box {
+  padding-top: 60px;
+}
+
+#gpa-display-text {
+  font-size: 5.5rem;
+  font-weight: bold;
+  text-shadow:  -3px 3px 0px #d9d9d9;
+}
+
+#gpa-display-credit {
+  font-size: small;
+}
+
+/* box */
+
+#list-display-box {
+  position: relative;
+  display: grid;
+  gap: 16px;
+  grid-template-rows: auto 1fr auto;
+  height: calc(100vh - 247px);
+}
+
+.course-header-text {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#error-text {
+  font-size: small;
+  color: red;
+  padding: 0 8px;
+}
+
+#list-container {
+  overflow: auto;
+  > *:not(:first-child) {
+    margin-top: 8px;
+  }
+  &:empty:before {
+    content: "Empty Course List";
+    position: absolute;
+    margin: 16px 0;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: xx-large;
+    color: gainsboro;
+  }
+}
+
+/* subject-list */
+
+.course-list {
+  display: grid;
+  grid-template-columns: 1fr 64px 24px;
+  padding: 8px;
+  border: 1px solid whitesmoke;
+  border-radius: 6px;
+}
+
+.course-name-container {
+  display: flex;
+  align-items: center;
+}
+
+.course-name {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.course-id {
+  color: grey;
+  font-size: small;
+}
+
+.course-grade-contaienr {
+  position: relative;
+}
+
+.course-grade {
+  font-weight: bold;
+  font-size: xx-large;
+}
+
+.course-credit {
+  position: absolute;
+  bottom: 0;
+  font-weight: normal;
+  font-size: 20px;
+  display: inline;
+}
+
+.course-delete-icon {
+  transition: 0.3s;
+  &:hover {
+    color: red;
+  }
+}
+
+/* course-create-box */
+
+#course-create-box {
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 36px;
+}
+
+#course-input-align-1 {
+  display: grid;
+  grid-template-columns: 108px 1fr;
+  input {
+    display: block;
+    width: 95%;
+    border-radius: 40px;
+    border: 1px solid lightgray !important;
+    padding: 2px 12px;
+    margin: 4px;
+  }
+  > aside:first-child > input {
+    width: 82%;
+  }
+}
+
+#course-input-align-2 {
+  display: grid;
+  grid-template-columns: 108px 1fr;
+  padding: 4px 0;
+}
+
+#create-credit-selector {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  > * {
+    color: white;
+    background-color: black;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 6px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+}
+
+#create-grade-selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  > * {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+}
+
+.f-icon { background-color: hsl(0, 0%, 65%); }
+.w-icon { background-color: hsl(200, 65%, 65%); }
+.d-icon { background-color: hsl(0, 65%, 65%); }
+.dp-icon { background-color: hsl(20, 65%, 65%); }
+.c-icon { background-color: hsl(40, 65%, 65%); }
+.cp-icon { background-color: hsl(60, 65%, 65%); }
+.b-icon { background-color: hsl(80, 65%, 65%); }
+.bp-icon { background-color: hsl(100, 65%, 65%); }
+.a-icon { background-color: hsl(120, 65%, 65%); }
+
+#create-grade-selector > *.sel,
+#create-credit-selector > *.sel {
+  box-shadow: 0 0 0 2px $selectionColor, 0 0 1px 4px $subSelectionColor;
+}
+
+#create-btn {
+  color: white;
+  font-size: large;
+  background-color: lightslategray;
+  border-radius: 50px;
+  transition: 0.3s;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+}

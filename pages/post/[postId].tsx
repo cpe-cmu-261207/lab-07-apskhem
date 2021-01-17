@@ -56,7 +56,7 @@ const Post = () => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap" />
-        <title>Lab 07 by Apisit | Post View</title>
+        <title>{state.post ? `Lab 07 | ${state.post?.owner.firstName}'s Post` : "Lab 07 | Post"}</title>
       </Head>
       <Header rootPath="../" />
       { !state.post && <Loader isGlobal={true} /> }

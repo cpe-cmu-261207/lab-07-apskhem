@@ -42,14 +42,15 @@
     code {font-family: monospace,monospace;font-size: 1em}
 }
 
-@mixin default-hr {
+@mixin default-hr($color: lightgray) {
     hr {
         display: block;
         box-sizing: content-box;
         height: 0;
         border: 0;
         overflow: visible;
-        border-top: 2px solid grey;
+        border-top: 2px solid $color;
+        opacity: 0.5;
     }
 }
 
