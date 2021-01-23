@@ -12,41 +12,50 @@ import Loader from "../../public/components/Loader";
 const BASE_URL = "https://dummyapi.io/data/api";
 const APP_ID = "600259f00769bf047313ec65";
 
-interface PostData {
-  post: PostApiForm | null;
-  comment: CommentApiForm[];
-}
-
 // function component
 const Post = () => {
   const router = useRouter();
   const { postId } = router.query;
-
-  const [ state, setState ] = useState<PostData>({ post: null, comment: [] });
+  const [ post, setPost ] = useState<PostApiForm | null>(null);
+  const [ comments, setComments ] = useState<CommentApiForm[] | null>(null);
 
   // on page load
   useEffect(() => {
-    (async () => {
-      try {
-        const commentRes = await axios.get<DummyApiResquestedForm<CommentApiForm>>(`${BASE_URL}/post/${postId}/comment`, { headers: { "app-id": APP_ID }});
-        const postRes = await axios.get<PostApiForm>(`${BASE_URL}/post/${postId}`, { headers: { "app-id": APP_ID }});
-  
-        // console.log(commentRes.data);
-        // console.log(postRes.data);
+    if (!postId) return;
 
-        setState({ post: postRes.data, comment: commentRes.data.data });
-      }
-      catch (err) {
-        console.error(err.data);
-      }
-    })();
-  }, []);
+    requestPost();
+    requestComments();
+  }, [postId]);
 
-  // functions
-  const renderComment = (): JSX.Element[] => {
-    return state.comment.map((comment) => {
+  // request post function
+  const requestPost = async () => {
+    try {
+      const postRes = await axios.get<PostApiForm>(`${BASE_URL}/post/${postId}`, { headers: { "app-id": APP_ID }});
+
+      setPost(postRes.data);
+    }
+    catch (err) {
+      console.error(err.data);
+    }
+  }
+
+  // request comments function
+  const requestComments = async () => {
+    try {
+      const commentRes = await axios.get<DummyApiResquestedForm<CommentApiForm>>(`${BASE_URL}/post/${postId}/comment`, { headers: { "app-id": APP_ID }});
+
+      setComments(commentRes.data.data);
+    }
+    catch (err) {
+      console.error(err.data);
+    }
+  }
+
+  // render function
+  const renderComment = (): JSX.Element[] | JSX.Element => {
+    return comments?.map((comment) => {
       return <Comment key={comment.id} {...comment} />
-    });
+    }) ?? <></>;
   }
 
   // render
@@ -56,24 +65,25 @@ const Post = () => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap" />
-        <title>{state.post ? `Lab 07 | ${state.post?.owner.firstName}'s Post` : "Lab 07 | Post"}</title>
+        <title>{post ? `Lab 07 | ${post?.owner.firstName}'s Post` : "Lab 07 | Post"}</title>
       </Head>
       <Header rootPath="../" />
-      { !state.post && <Loader isGlobal={true} /> }
+      { !post && <Loader isGlobal={true} /> }
       <main>
-        <h1>{state.post?.owner.firstName}'s Post</h1>
+        <h1>{post?.owner.firstName}'s Post</h1>
         <div>
-          { state.post && <FeedPost {...state.post} configs={{ isViewing: true }}/>}
+          { post && <FeedPost {...post} configs={{ isViewing: true }}/>}
         </div>
         <div className="comment-section">
           <div className="comment-header">
-            <h3>{state.comment.length} {state.comment.length === 1 ? "Comment" : "Comments"}</h3>
+            <h3>{comments?.length ?? 0} {comments && comments.length === 1 ? "Comment" : "Comments"}</h3>
           </div>
           <div className="comment-container">
             {renderComment()}
           </div>
         </div>
       </main>
+      { post && !comments && <Loader isGlobal={false} /> }
       <Footer />
     </>
   );
